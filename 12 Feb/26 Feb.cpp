@@ -16,6 +16,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <regex>
 using namespace std;
 
 
@@ -61,6 +62,13 @@ bool     deletion = false; // if any record has been deleted
 void closeFile(fstream*); // closes a file with its pointer, then deletes the file pointer
 bool isFileExist(const char*); // check if a file exists
 
+bool emailValidation(const std::string& email)
+{
+    const std::regex pattern
+    ("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+
+    return std::regex_match(email, pattern);
+}
 
 /////////////     Main    /////////////
 int main()
@@ -70,7 +78,7 @@ int main()
         do ////// Menu //////
         {
             system("cls"); // clear screen
-
+            loopaddcase:
             cout << "\n    < Seekers Database > \n\n";
             cout << "(1) Add     a new Record \n";
             cout << "(2) Search an existing Record\n";
@@ -117,10 +125,10 @@ int main()
             {
                 cout << "   ------------------------------^----------------------------" << endl;
                 cout << "   ***** Invalid input! Please enter a valid first name! *****" << endl;
-                cout << "   ***** Example:    George                              *****" << endl;
+                cout << "   ***** Example               : George                  *****" << endl;
                 cout << "   -----------------------------------------------------------" << endl;
                 cout << "   First Name                  : ";
-                getline(cin, Seeker.first_name);
+                cin >> Seeker.first_name;
             }
             Seeker.first_name[0] = toupper(Seeker.first_name[0]);
             
@@ -133,7 +141,7 @@ int main()
             {
                 cout << "   ------------------------------^----------------------------" << endl;
                 cout << "   ***** Invalid input! Please enter a valid last name!  *****" << endl;
-                cout << "   ***** Example:    Washington                          *****" << endl;
+                cout << "   ***** Example              : Washington               *****" << endl;
                 cout << "   -----------------------------------------------------------" << endl;
                 cout << "   Last Name                  : ";
                 getline(cin, Seeker.last_name);
@@ -149,11 +157,53 @@ int main()
             {
                 cout << "   ------------------------------^----------------------------" << endl;
                 cout << "   ***** Invalid input! Please enter a valid IC number!  *****" << endl;
-                cout << "   ***** Example:    012049056709                        *****" << endl;
+                cout << "   ***** Example               : 011231016703            *****" << endl;
                 cout << "   -----------------------------------------------------------" << endl;
                 cout << "   IC Number                   : ";
                 getline(cin, Seeker.ic_number);
             }
+
+            cout << "   Contact Number              : ";
+            cin >> Seeker.contact_number;
+
+            while (Seeker.contact_number.find_first_of("1234567890") == string::npos || (Seeker.contact_number.length() != 10 && Seeker.contact_number.length() != 11))
+            {
+                cout << "   ------------------------------^----------------------------" << endl;
+                cout << "   ***** Invalid input! Please enter a valid number!     *****" << endl;
+                cout << "   ***** Example               : 0123456789              *****" << endl;
+                cout << "   -----------------------------------------------------------" << endl;
+                cout << "   Contact Number              : ";
+                cin >> Seeker.contact_number;
+            }
+
+            cout << "   Emergency Contact Number    : ";
+            cin >> Seeker.emergency_number;
+
+            while (Seeker.emergency_number.find_first_of("1234567890") == string::npos || (Seeker.emergency_number.length() != 10 && Seeker.emergency_number.length() != 11))
+            {
+                cout << "   ------------------------------^----------------------------" << endl;
+                cout << "   ***** Invalid input! Please enter a valid number!     *****" << endl;
+                cout << "   ***** Example               : 0123456789              *****" << endl;
+                cout << "   -----------------------------------------------------------" << endl;
+                cout << "   Emergency Contact Number    : ";
+                cin >> Seeker.emergency_number;
+            }
+
+            cout << "   Email Address               : ";
+            cin >> Seeker.email_address;
+
+            while (emailValidation(Seeker.email_address) != true)
+            {
+                cout << "   ------------------------------^----------------------------" << endl;
+                cout << "   ***** Invalid input! Please enter a valid email!      *****" << endl;
+                cout << "   ***** Example               : george@example.com      *****" << endl;
+                cout << "   -----------------------------------------------------------" << endl;
+                cout << "   Email Address               : ";
+                cin >> Seeker.email_address;
+            }
+
+            cout << "   Working Experience (years)  : ";
+            cin >> Seeker.working_exp;
                     
             cout << "\n   -----------------------------------------------------------";
             cout << "\n   |                      Date of Birth                      |";
@@ -163,9 +213,9 @@ int main()
 
             while (Seeker.dob.find_first_of("1234567890") == string::npos || Seeker.dob.length() != 2)
             {
-                cout << "   -----------------------------------------------------------" << endl;
+                cout << "   ------------------------------^----------------------------" << endl;
                 cout << "   ***** Invalid input! Please enter a valid day!        *****" << endl;
-                cout << "   ***** Example:    31                                  *****" << endl;
+                cout << "   ***** Example               : 31                      *****" << endl;
                 cout << "   -----------------------------------------------------------" << endl;
                 cout << "   Day (DD)                    : ";
                 cin >> Seeker.dob;
@@ -177,9 +227,9 @@ int main()
 
             while (Seeker.dob.find_first_of("1234567890") == string::npos || Seeker.dob.length() != 2)
             {
-                cout << "   -----------------------------------------------------------" << endl;
+                cout << "   ------------------------------^----------------------------" << endl;
                 cout << "   ***** Invalid input! Please enter a valid month!      *****" << endl;
-                cout << "   ***** Example:    12                                  *****" << endl;
+                cout << "   ***** Example               : 12                      *****" << endl;
                 cout << "   -----------------------------------------------------------" << endl;
                 cout << "   Month (MM)                  : ";
                 cin >> Seeker.dob;
@@ -191,9 +241,9 @@ int main()
 
             while (Seeker.dob.find_first_of("1234567890") == string::npos || Seeker.dob.length() != 4)
             {
-                cout << "   -----------------------------------------------------------" << endl;
+                cout << "   ------------------------------^----------------------------" << endl;
                 cout << "   ***** Invalid input! Please enter a valid year!       *****" << endl;
-                cout << "   ***** Example:    1995                                *****" << endl;
+                cout << "   ***** Example               : 1995                    *****" << endl;
                 cout << "   -----------------------------------------------------------" << endl;
                 cout << "   Year (YYYY)                 : ";
                 cin >> Seeker.dob;
@@ -203,9 +253,9 @@ int main()
             cout << "\n   -----------------------------------------------------------";
             cout << "\n   |                         Gender                          |";
             cout << "\n   -----------------------------------------------------------" << endl;
-            cout << "\n   '1'   : Male";
-            cout << "\n   '2'   : Female";
-            cout << "\n   Select: ";
+            cout << "\n   '1'                         : Male";
+            cout << "\n   '2'                         : Female";
+            cout << "\n   Select                      : ";
             cin >> selector;
 
             do {
@@ -216,54 +266,22 @@ int main()
                 case 2: Seeker.gender = "Female";
                     break;
                 default:
-                    cout << "   -----------------------------------------------------------" << endl;
+                    cout << "   ------------------------------^----------------------------" << endl;
                     cout << "   ***** Invalid option! Please select a valid option!   *****" << endl;
-                    cout << "   ***** Example:    1                                   *****" << endl;
+                    cout << "   ***** Example               : 1                       *****" << endl;
                     cout << "   -----------------------------------------------------------" << endl;
-                    cout << "   Select: ";
+                    cout << "   Select                      : ";
                     cin >> selector;
                     break;
                 }
             } while (selector != 1 && selector != 2);
 
-            cout << "   Contact Number              : ";
-            cin >> Seeker.contact_number;
-
-            while (Seeker.contact_number.find_first_of("1234567890") == string::npos || (Seeker.contact_number.length() != 10 && Seeker.contact_number.length() != 11))
-            {
-                cout << "   -----------------------------------------------------------" << endl;
-                cout << "   ***** Invalid input! Please enter a valid number!     *****" << endl;
-                cout << "   ***** Example:    0123456789                          *****" << endl;
-                cout << "   -----------------------------------------------------------" << endl;
-                cout << "   Contact Number              : ";
-                cin >> Seeker.contact_number;
-            }
-
-            cout << "   Emergency Contact Number    : ";
-            cin >> Seeker.emergency_number;
-
-            while (Seeker.emergency_number.find_first_of("1234567890") == string::npos || (Seeker.emergency_number.length() != 10 && Seeker.emergency_number.length() != 11))
-            {
-                cout << "   -----------------------------------------------------------" << endl;
-                cout << "   ***** Invalid input! Please enter a valid number!     *****" << endl;
-                cout << "   ***** Example:    0123456789                          *****" << endl;
-                cout << "   -----------------------------------------------------------" << endl;
-                cout << "   Emergency Contact Number    : ";
-                cin >> Seeker.emergency_number;
-            }
-
-            cout << "   Email Address               : ";
-            cin >> Seeker.email_address;
-
-            cout << "   Working Experience (years)  : ";
-            cin >> Seeker.working_exp;
-
             cout << "\n   -----------------------------------------------------------";
             cout << "\n   |                     Marital Status                      |";
             cout << "\n   -----------------------------------------------------------" << endl;
-            cout << "\n   '1'   : Single";
-            cout << "\n   '2'   : Married";
-            cout << "\n   Select: ";
+            cout << "\n   '1'                      Single";
+            cout << "\n   '2'                      Married";
+            cout << "\n   Select                   : ";
             cin >> selector;
 
             do {
@@ -274,11 +292,11 @@ int main()
                 case 2: Seeker.marital_status = "Married";
                     break;
                 default: 
-                    cout << "   -----------------------------------------------------------" << endl;
+                    cout << "   ------------------------------^----------------------------" << endl;
                     cout << "   ***** Invalid option! Please select a valid option!   *****" << endl;
-                    cout << "   ***** Example:    1                                   *****" << endl;
+                    cout << "   ***** Example              : 1                        *****" << endl;
                     cout << "   -----------------------------------------------------------" << endl;
-                    cout << "   Select: ";
+                    cout << "   Select                     : ";
                     cin >> selector;
                     break;
                 }
@@ -287,10 +305,10 @@ int main()
             cout << "\n   -----------------------------------------------------------";
             cout << "\n   |                   Working Preference                    |";
             cout << "\n   -----------------------------------------------------------" << endl;
-            cout << "\n   '1'   : Part-time";
-            cout << "\n   '2'   : Full-time";
-            cout << "\n   '3'   : Both";
-            cout << "\n   Select: ";
+            cout << "\n   '1'                 Part-time";
+            cout << "\n   '2'                 Full-time";
+            cout << "\n   '3'                 Both";
+            cout << "\n   Select              : ";
             cin >> selector;
 
             do {
@@ -303,11 +321,11 @@ int main()
                 case 3: Seeker.working_pref = "Both";
                     break;
                 default: 
-                    cout << "   -----------------------------------------------------------" << endl;
+                    cout << "   ------------------------------^----------------------------" << endl;
                     cout << "   ***** Invalid option! Please select a valid option!   *****" << endl;
-                    cout << "   ***** Example:    1                                   *****" << endl;
+                    cout << "   ***** Example       : 1                               *****" << endl;
                     cout << "   -----------------------------------------------------------" << endl;
-                    cout << "   Select: ";
+                    cout << "   Select              : ";
                     cin >> selector;
                     break;
                 }
@@ -316,11 +334,11 @@ int main()
             cout << "\n   -----------------------------------------------------------";
             cout << "\n   |              Academic Qualification Level               |";
             cout << "\n   -----------------------------------------------------------" << endl;
-            cout << "\n   '1':    Higher Certificate";
-            cout << "\n   '2':    National Diploma";
-            cout << "\n   '3':    Bachelor's Degree";
-            cout << "\n   '4':    Honours Degree";
-            cout << "\n   Select : ";
+            cout << "\n   '1'                 Higher Certificate";
+            cout << "\n   '2'                 National Diploma";
+            cout << "\n   '3'                 Bachelor's Degree";
+            cout << "\n   '4'                 Honours Degree";
+            cout << "\n   Select              : ";
             cin >> selector;
 
             do {
@@ -335,36 +353,82 @@ int main()
                 case 4: Seeker.qualification = "Honours Degree";
                     break;
                 default: 
-                    cout << "   -----------------------------------------------------------" << endl;
+                    cout << "   ------------------------------^----------------------------" << endl;
                     cout << "   ***** Invalid option! Please select a valid option!   *****" << endl;
-                    cout << "   ***** Example:    1                                   *****" << endl;
+                    cout << "   ***** Example       : 1                               *****" << endl;
                     cout << "   -----------------------------------------------------------" << endl;
-                    cout << "   Select: ";
+                    cout << "   Select              : ";
                     cin >> selector;
                     break;
                 }
             } while (selector < 1 || selector > 4);
 
+            system("cls");
+
+            cout << "\n    -----------------------------------------------------------";
+            cout << "\n    |                       Confirmation                      |";
+            cout << "\n    -----------------------------------------------------------" << endl;
+            cout << "\n    First Name                   : " << Seeker.first_name;
+            cout << "\n    Last Name                    : " << Seeker.last_name;
+            cout << "\n    IC Number                    : " << Seeker.ic_number;
+            cout << "\n    Contact Number               : " << Seeker.contact_number;
+            cout << "\n    Emergency Contact Number     : " << Seeker.emergency_number;
+            cout << "\n    Email Address                : " << Seeker.email_address;
+            cout << "\n    Working Experience           : " << Seeker.working_exp;
+            cout << "\n    Date of Birth                : " << Seeker.dateOf_birth;
+            cout << "\n    Gender                       : " << Seeker.gender;
+            cout << "\n    Marital Status               : " << Seeker.marital_status;
+            cout << "\n    Working Preference           : " << Seeker.working_pref;
+            cout << "\n    Academic Qualification Level : " << Seeker.qualification << endl;
+
             // Don't touch after this line
+
             Seeker.deleted = 0;
 
             fs = new fstream(SEEKER_FILE_NAME, ios::out | ios::app | ios::binary);
 
             if (!fs)
             {
-                cout << "\n Can't open or create '" << SEEKER_FILE_NAME << "' file" << endl;
+                cout << "\n    Can't open or create " << SEEKER_FILE_NAME << " file" << endl;
                 system("pause");
                 break;
             }
 
-            fs->write((char*)&Seeker, sizeof(Seeker));
+            cout << "\n    Do you want to save this record? (1=Yes 2=No 3=Save and Add): ";
 
-            closeFile(fs);
+            char confirm;
 
-            cout << "\n Record added." << endl;
-            system("pause");
+            loopadd:
+            cin >> confirm;
+            cin.ignore();
+            system("cls");
 
-            break;
+            if (confirm == '1')
+            {
+                fs->write((char*)&Seeker, sizeof(Seeker));
+                closeFile(fs);
+                break;
+            }
+            if (confirm == '2')
+            {
+                cout << " Record not added" << endl;
+                system("pause");
+                break;
+            }
+            if (confirm == '3')
+            {
+                fs->write((char*)&Seeker, sizeof(Seeker));
+                closeFile(fs);
+                
+                goto loopaddcase;
+            }
+            else
+            {
+                cout << "\n\n   Invalid input! Please enter (1=Yes 2=No 3=Save and Add) To Confirm Add Record.";
+                cout << "\n\n   Do you want to add this record? (1=Yes 2=No 3=Save and Add): ";
+
+                goto loopadd;
+            }
 /*
         case '2': ////// Modify Record //////
 
